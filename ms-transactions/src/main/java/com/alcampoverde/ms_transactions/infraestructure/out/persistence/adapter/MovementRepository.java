@@ -46,7 +46,7 @@ public class MovementRepository implements IAccountMovementRepositoryPort {
     }
 
     @Override
-    public void deactivateMovement(Integer movementId) {
+    public void cancelTransaction(Integer movementId) {
         Optional<MovementEntity> entityOpt = movementRepository.findById(movementId);
         if (entityOpt.isPresent()) {
             MovementEntity entity = entityOpt.get();

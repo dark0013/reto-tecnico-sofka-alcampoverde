@@ -1,7 +1,7 @@
 package com.alcampoverde.ms_transactions.infraestructure.in.handler;
 
 import com.alcampoverde.ms_transactions.domain.model.Account;
-import com.alcampoverde.ms_transactions.domain.port.in.IAccountServicePort;
+import com.alcampoverde.ms_transactions.domain.port.in.IAccountManagementPort;
 import com.alcampoverde.ms_transactions.infraestructure.in.dto.AccountDto;
 import com.alcampoverde.ms_transactions.infraestructure.in.mapper.IAccountMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountHandler {
 
-    private final IAccountServicePort accountService;
+    private final IAccountManagementPort accountService;
     private final IAccountMapper accountMapper;
 
     public List<AccountDto> findAllAccount() {

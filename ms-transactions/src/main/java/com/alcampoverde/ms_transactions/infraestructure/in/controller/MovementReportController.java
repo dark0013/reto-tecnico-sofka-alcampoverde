@@ -23,12 +23,12 @@ public class MovementReportController {
 
 
     @GetMapping
-    public List<MovementReportDto> getMovementReportByAccountIdAndDate(
+    public List<MovementReportDto> generateMovementReport(
 
             @RequestParam Integer accountId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
-        return movementService.findByAccountIdAndDate(accountId,startDate,endDate);
+        return movementService.generateMovementReport(accountId,startDate,endDate);
     }
 }

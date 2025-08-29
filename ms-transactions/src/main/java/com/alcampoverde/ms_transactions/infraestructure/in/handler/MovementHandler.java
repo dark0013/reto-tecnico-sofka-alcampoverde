@@ -2,7 +2,7 @@ package com.alcampoverde.ms_transactions.infraestructure.in.handler;
 
 import com.alcampoverde.ms_transactions.domain.model.Movement;
 import com.alcampoverde.ms_transactions.domain.model.MovementReport;
-import com.alcampoverde.ms_transactions.domain.port.in.IAccountMovementServicePort;
+import com.alcampoverde.ms_transactions.domain.port.in.IAccountTransactionPort;
 import com.alcampoverde.ms_transactions.infraestructure.in.dto.MovementDto;
 import com.alcampoverde.ms_transactions.infraestructure.in.dto.MovementReportDto;
 import com.alcampoverde.ms_transactions.infraestructure.in.mapper.IMovementMapper;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MovementHandler {
 
-    private final IAccountMovementServicePort movimentService;
+    private final IAccountTransactionPort movimentService;
     private final IMovementMapper movementMapper;
     private final IMovementRepo movementReportMapper;
 
@@ -39,11 +39,11 @@ public class MovementHandler {
     }
 
     public void deactivateMovement(Integer movementId) {
-        movimentService.deactivateMovement(movementId);
+        movimentService.cancelTransaction(movementId);
     }
 
-    public List<MovementReportDto> findByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        List<MovementReport> MovementReport = movimentService.findByAccountIdAndDate(accountId, startDate, endDate);
+    public List<MovementReportDto> generateMovementReport(Integer accountId, LocalDate startDate, LocalDate endDate) {
+        List<MovementReport> MovementReport = movimentService.generateMovementReport(accountId, startDate, endDate);
         return MovementReport.stream().map(movementReportMapper::toDto).collect(Collectors.toList());
     }
 }

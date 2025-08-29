@@ -11,5 +11,5 @@ public interface IAccountMovementRepositoryPort {
     List<Movement> findAll();
 
     Movement transaction(Movement transaction);
-    void deactivateMovement(Integer movementId);
+    void cancelTransaction(Integer movementId);
 }

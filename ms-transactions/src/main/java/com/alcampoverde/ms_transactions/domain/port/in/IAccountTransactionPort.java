@@ -6,7 +6,7 @@ import com.alcampoverde.ms_transactions.domain.model.MovementReport;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface IAccountMovementServicePort {
+public interface IAccountTransactionPort {
 
     Movement findById(Integer id);
 
@@ -14,7 +14,7 @@ public interface IAccountMovementServicePort {
 
     Movement transaction(Movement transaction);
 
-    void deactivateMovement(Integer movementId);
+    void cancelTransaction(Integer movementId);
 
-    List<MovementReport> findByAccountIdAndDate(Integer accountId, LocalDate startDate, LocalDate endDate);
+    List<MovementReport> generateMovementReport(Integer accountId, LocalDate startDate, LocalDate endDate);
 }

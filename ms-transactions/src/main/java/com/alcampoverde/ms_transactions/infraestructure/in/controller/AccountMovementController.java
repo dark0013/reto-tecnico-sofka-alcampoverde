@@ -16,13 +16,13 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("v1/movements")
 @RequiredArgsConstructor
-public class MovementController {
+public class AccountMovementController {
 
     private final MovementHandler movementTransaction;
 
 
     @GetMapping
-    public ResponseEntity<List<MovementDto>> fincAllTransaction() {
+    public ResponseEntity<List<MovementDto>> findAllTransaction() {
         return new ResponseEntity<>(movementTransaction.findAll(), OK);
     }
 

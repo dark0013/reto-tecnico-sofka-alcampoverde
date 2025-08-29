@@ -4,19 +4,19 @@ package com.alcampoverde.ms_transactions.application.service;
 import com.alcampoverde.ms_transactions.application.exception.AccountNotFoundException;
 import com.alcampoverde.ms_transactions.application.exception.CustomerNotFoundException;
 import com.alcampoverde.ms_transactions.domain.model.Account;
-import com.alcampoverde.ms_transactions.domain.port.in.IAccountServicePort;
+import com.alcampoverde.ms_transactions.domain.port.in.IAccountManagementPort;
 import com.alcampoverde.ms_transactions.domain.port.out.IAccountRepositoryPort;
 import com.alcampoverde.ms_transactions.domain.port.out.IRequestMessagePort;
 
 import java.util.List;
 import java.util.Optional;
 
-public class AccountService implements IAccountServicePort {
+public class AccountManagementService implements IAccountManagementPort {
 
     private final IAccountRepositoryPort accountRepository;
     private final IRequestMessagePort requestMessagePort;
 
-    public AccountService(IAccountRepositoryPort accountRepository, IRequestMessagePort requestMessagePort) {
+    public AccountManagementService(IAccountRepositoryPort accountRepository, IRequestMessagePort requestMessagePort) {
         this.accountRepository = accountRepository;
         this.requestMessagePort = requestMessagePort;
     }

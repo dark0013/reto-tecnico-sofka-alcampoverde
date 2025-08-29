@@ -5,7 +5,7 @@ import com.alcampoverde.ms_transactions.domain.model.Account;
 
 import java.util.List;
 
-public interface IAccountServicePort {
+public interface IAccountManagementPort {
 
     List<Account> findAllAccount();
 
