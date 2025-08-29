@@ -47,31 +47,35 @@ public class AccountManagementService implements IAccountManagementPort {
         return this.accountRepository.saveAccount(account);
     }
 
+    @Override
     public Account updateAccount(Account account) {
-        String customerExists = requestMessagePort.sendMessage(account.getCustomerId().toString());
-        if (customerExists == null || customerExists.isEmpty() || customerExists.equalsIgnoreCase("false")) {
-            throw new CustomerNotFoundException("No customer found with ID: " + account.getCustomerId());
-        }
-        Optional<Account> existingAccountOpt = accountRepository.findAccountById(account.getAccountId());
-        if (existingAccountOpt.isEmpty()) {
-            throw new AccountNotFoundException("NO ACCOUNT FOUND");
-        }
-        Account existingAccount = Account.builder()
-                .accountId(account.getAccountId())
-                .accountNumber(account.getAccountNumber())
-                .accountType(account.getAccountType())
-                .availableBalance(account.getAvailableBalance())
-                .status(account.getStatus())
-                .customerId(account.getCustomerId())
-                .movements(account.getMovements())
-                .build();
+        validateCustomerExists(account.getCustomerId());
+        Account existingAccount = getExistingAccount(account.getAccountId());
 
-        return accountRepository.updateAccount(existingAccount);
+        Account updatedAccount = buildUpdatedAccount(existingAccount, account);
+
+        return accountRepository.updateAccount(updatedAccount);
     }
 
     @Override
     public void deleteAccount(Integer id) {
         this.accountRepository.deleteAccount(id);
     }
+
+    private void validateCustomerExists(Integer customerId) {
+        String customerExists = requestMessagePort.sendMessage(customerId.toString());
+        if (customerExists == null || customerExists.isEmpty() || customerExists.equalsIgnoreCase("false")) {
+            throw new CustomerNotFoundException("No customer found with ID: " + customerId);
+        }
+    }
+
+    private Account getExistingAccount(Integer accountId) {
+        return accountRepository.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("No account found with ID: " + accountId));
+    }
+
+    private Account buildUpdatedAccount(Account existing, Account newData) {
+        return Account.builder().accountId(existing.getAccountId()).accountNumber(newData.getAccountNumber()).accountType(newData.getAccountType()).availableBalance(newData.getAvailableBalance()).status(newData.getStatus()).customerId(newData.getCustomerId()).movements(newData.getMovements()).build();
+    }
+
 
 }

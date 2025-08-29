@@ -47,11 +47,8 @@ public class RequestMessageAdapter implements IRequestMessagePort {
     private String sendAndRecived(String solicitud) throws ExecutionException, InterruptedException, TimeoutException {
         ProducerRecord<String, String> record = new ProducerRecord<>(requestTopic, solicitud);
         record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, replyTopic.getBytes()));
-
         RequestReplyFuture<String, String, String> future = replyingKafkaTemplate.sendAndReceive(record);
-
         SendResult<String, String> sendResult = future.getSendFuture().get(10, TimeUnit.SECONDS);
-
         ConsumerRecord<String, String> consumerRecord = future.get(10, TimeUnit.SECONDS);
         return consumerRecord.value();
     }

@@ -41,21 +41,27 @@ public class TransactionService implements IAccountTransactionPort {
     }
 
 
+    @Override
     public Movement transaction(Movement movement) {
         Account account = getAccountOrThrow(movement.getAccount().getAccountId());
-
         Double updatedBalance = processMovement(account, movement);
-
         updateAccountBalance(account, updatedBalance);
-
         prepareMovement(movement, updatedBalance);
-
         return accountMovementRepository.transaction(movement);
     }
 
+    @Override
+    public void cancelTransaction(Integer movementId) {
+        accountMovementRepository.cancelTransaction(movementId);
+    }
+
+    @Override
+    public List<MovementReport> generateMovementReport(Integer accountId, LocalDate startDate, LocalDate endDate) {
+        return accountReportRepository.findByAccountIdAndDate(accountId, startDate, endDate);
+    }
+
     private Account getAccountOrThrow(Integer accountId) {
-        return accountRepository.findAccountById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException("Account not found with ID: " + accountId));
+        return accountRepository.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("Account not found with ID: " + accountId));
     }
 
     private Double processMovement(Account account, Movement movement) {
@@ -91,16 +97,5 @@ public class TransactionService implements IAccountTransactionPort {
     private void prepareMovement(Movement movement, Double updatedBalance) {
         movement.setAvailableBalance(updatedBalance);
         movement.setDate(LocalDateTime.now());
-    }
-
-
-    @Override
-    public void cancelTransaction(Integer movementId) {
-        accountMovementRepository.cancelTransaction(movementId);
-    }
-
-    @Override
-    public List<MovementReport> generateMovementReport(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        return accountReportRepository.findByAccountIdAndDate(accountId, startDate, endDate);
     }
 }
