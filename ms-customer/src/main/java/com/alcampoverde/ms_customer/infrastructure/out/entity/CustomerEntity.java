@@ -1,4 +1,4 @@
-package com.alcampoverde.ms_customer.infrastructure.out.persistence.entity;
+package com.alcampoverde.ms_customer.infrastructure.out.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,12 +1,12 @@
-package com.alcampoverde.ms_customer.infrastructure.out.persistence.adapter;
+package com.alcampoverde.ms_customer.infrastructure.out.adapter;
 
 
 
 import com.alcampoverde.ms_customer.domain.model.Customer;
 import com.alcampoverde.ms_customer.domain.port.out.ICustomerRepositoryPort;
-import com.alcampoverde.ms_customer.infrastructure.out.persistence.entity.CustomerEntity;
-import com.alcampoverde.ms_customer.infrastructure.out.persistence.mapper.ICustomerRepositoryMapper;
-import com.alcampoverde.ms_customer.infrastructure.out.persistence.repository.ICustomerRepository;
+import com.alcampoverde.ms_customer.infrastructure.out.entity.CustomerEntity;
+import com.alcampoverde.ms_customer.infrastructure.out.mapper.ICustomerRepositoryMapper;
+import com.alcampoverde.ms_customer.infrastructure.out.repository.ICustomerRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
