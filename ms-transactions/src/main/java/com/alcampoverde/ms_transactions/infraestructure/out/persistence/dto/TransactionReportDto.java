@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MovementReportDto {
+public class TransactionReportDto {
     private Integer accountId;
     private LocalDate date;
     private String customerName;
@@ -21,9 +21,9 @@ public class MovementReportDto {
     private BigDecimal transactionAmount;
     private BigDecimal movementAvailableBalance;
 
-    public MovementReportDto(LocalDate date, String customerName, String accountNumber, String accountType,
-                             Double availableBalance, Boolean status,
-                             BigDecimal transactionAmount, BigDecimal movementAvailableBalance) {
+    public TransactionReportDto(LocalDate date, String customerName, String accountNumber, String accountType,
+                                Double availableBalance, Boolean status,
+                                BigDecimal transactionAmount, BigDecimal movementAvailableBalance) {
         this.date = date;
         this.customerName = customerName;
         this.accountNumber = accountNumber;

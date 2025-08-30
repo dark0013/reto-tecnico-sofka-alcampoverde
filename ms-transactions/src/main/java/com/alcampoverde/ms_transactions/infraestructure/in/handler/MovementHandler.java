@@ -18,32 +18,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MovementHandler {
 
-    private final IAccountTransactionPort movimentService;
+    private final IAccountTransactionPort movementServicePort;
     private final IMovementMapper movementMapper;
     private final IMovementRepo movementReportMapper;
 
 
     public MovementDto findById(Integer id) {
-        Movement movementObj = movimentService.findById(id);
+        Movement movementObj = movementServicePort.findById(id);
         return movementMapper.toDto(movementObj);
     }
 
     public List<MovementDto> findAll() {
-        return movimentService.findAll().stream().map(movementMapper::toDto).collect(Collectors.toList());
+        return movementServicePort.findAll().stream().map(movementMapper::toDto).collect(Collectors.toList());
     }
 
     public MovementDto transaction(MovementDto transaction) {
         Movement movement = movementMapper.toDomain(transaction);
-        Movement movementObj = movimentService.transaction(movement);
+        Movement movementObj = movementServicePort.transaction(movement);
         return movementMapper.toDto(movementObj);
     }
 
     public void deactivateMovement(Integer movementId) {
-        movimentService.cancelTransaction(movementId);
+        movementServicePort.cancelTransaction(movementId);
     }
 
     public List<MovementReportDto> generateMovementReport(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        List<MovementReport> MovementReport = movimentService.generateMovementReport(accountId, startDate, endDate);
+        List<MovementReport> MovementReport = movementServicePort.generateMovementReport(accountId, startDate, endDate);
         return MovementReport.stream().map(movementReportMapper::toDto).collect(Collectors.toList());
     }
 }

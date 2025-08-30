@@ -9,42 +9,41 @@ import com.alcampoverde.ms_transactions.domain.port.out.IAccountRepositoryPort;
 import com.alcampoverde.ms_transactions.domain.port.out.IRequestMessagePort;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AccountManagementService implements IAccountManagementPort {
 
-    private final IAccountRepositoryPort accountRepository;
-    private final IRequestMessagePort requestMessagePort;
+    private final IAccountRepositoryPort accountRepoPort;
+    private final IRequestMessagePort customerMessagePort;
 
-    public AccountManagementService(IAccountRepositoryPort accountRepository, IRequestMessagePort requestMessagePort) {
-        this.accountRepository = accountRepository;
-        this.requestMessagePort = requestMessagePort;
+    public AccountManagementService(IAccountRepositoryPort accountRepoPort, IRequestMessagePort customerMessagePort) {
+        this.accountRepoPort = accountRepoPort;
+        this.customerMessagePort = customerMessagePort;
     }
 
 
     @Override
     public List<Account> findAllAccount() {
-        return this.accountRepository.findAllAccount();
+        return this.accountRepoPort.findAllAccount();
     }
 
     @Override
     public Account findAccountById(Integer id) {
-        return this.accountRepository.findAccountById(id).orElseThrow(() -> new AccountNotFoundException("NO ACCOUNT FOUND"));
+        return this.accountRepoPort.findAccountById(id).orElseThrow(() -> new AccountNotFoundException("NO ACCOUNT FOUND"));
     }
 
     @Override
     public Account findAccountNumberById(String accountNumber) {
-        return this.accountRepository.findAccountNumberById(accountNumber).orElseThrow(() -> new AccountNotFoundException("NO ACCOUNT FOUND"));
+        return this.accountRepoPort.findAccountNumberById(accountNumber).orElseThrow(() -> new AccountNotFoundException("NO ACCOUNT FOUND"));
 
     }
 
     @Override
     public Account saveAccount(Account account) {
-        String customerExists = requestMessagePort.sendMessage(account.getCustomerId().toString());
+        String customerExists = customerMessagePort.sendMessage(account.getCustomerId().toString());
         if (customerExists == null || customerExists.isEmpty() || customerExists.equalsIgnoreCase("false")) {
             throw new CustomerNotFoundException("No customer found with ID: " + account.getCustomerId());
         }
-        return this.accountRepository.saveAccount(account);
+        return this.accountRepoPort.saveAccount(account);
     }
 
     @Override
@@ -54,23 +53,23 @@ public class AccountManagementService implements IAccountManagementPort {
 
         Account updatedAccount = buildUpdatedAccount(existingAccount, account);
 
-        return accountRepository.updateAccount(updatedAccount);
+        return accountRepoPort.updateAccount(updatedAccount);
     }
 
     @Override
     public void deleteAccount(Integer id) {
-        this.accountRepository.deleteAccount(id);
+        this.accountRepoPort.deleteAccount(id);
     }
 
     private void validateCustomerExists(Integer customerId) {
-        String customerExists = requestMessagePort.sendMessage(customerId.toString());
+        String customerExists = customerMessagePort.sendMessage(customerId.toString());
         if (customerExists == null || customerExists.isEmpty() || customerExists.equalsIgnoreCase("false")) {
             throw new CustomerNotFoundException("No customer found with ID: " + customerId);
         }
     }
 
     private Account getExistingAccount(Integer accountId) {
-        return accountRepository.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("No account found with ID: " + accountId));
+        return accountRepoPort.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("No account found with ID: " + accountId));
     }
 
     private Account buildUpdatedAccount(Account existing, Account newData) {

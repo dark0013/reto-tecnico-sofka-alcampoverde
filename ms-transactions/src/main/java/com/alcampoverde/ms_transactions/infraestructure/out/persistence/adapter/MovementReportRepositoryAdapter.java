@@ -2,7 +2,7 @@ package com.alcampoverde.ms_transactions.infraestructure.out.persistence.adapter
 
 import com.alcampoverde.ms_transactions.domain.model.MovementReport;
 import com.alcampoverde.ms_transactions.domain.port.out.IMovementReportRepositoryPort;
-import com.alcampoverde.ms_transactions.infraestructure.out.persistence.dto.MovementReportDto;
+import com.alcampoverde.ms_transactions.infraestructure.out.persistence.dto.TransactionReportDto;
 import com.alcampoverde.ms_transactions.infraestructure.out.persistence.mapper.IMovementReportRepositoryMapper;
 import com.alcampoverde.ms_transactions.infraestructure.out.persistence.repository.IMovementReportRepository;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ public class MovementReportRepositoryAdapter implements IMovementReportRepositor
 
     @Override
     public List<MovementReport> findByAccountIdAndDate(Integer accountId,LocalDate startDate, LocalDate endDate) {
-        List<MovementReportDto> movementEntity = movementReportRepository.findByAccountIdAndDate(accountId,startDate,endDate);
+        List<TransactionReportDto> movementEntity = movementReportRepository.findByAccountIdAndDate(accountId,startDate,endDate);
         return movementEntity.stream()
                 .map(movementReportRepositoryMapper::toDomain)
                 .collect(Collectors.toList());

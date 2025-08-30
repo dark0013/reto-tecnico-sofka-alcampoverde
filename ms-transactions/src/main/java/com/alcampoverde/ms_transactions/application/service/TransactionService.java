@@ -20,24 +20,24 @@ import java.util.List;
 
 public class TransactionService implements IAccountTransactionPort {
 
-    private final IAccountMovementRepositoryPort accountMovementRepository;
-    private final IAccountRepositoryPort accountRepository;
-    private final IMovementReportRepositoryPort accountReportRepository;
+    private final IAccountMovementRepositoryPort movementRepositoryPort;
+    private final IAccountRepositoryPort accountRepositoryPort;
+    private final IMovementReportRepositoryPort movementReportRepositoryPort;
 
-    public TransactionService(IAccountMovementRepositoryPort accountMovementRepository, IAccountRepositoryPort accountRepository, IMovementReportRepositoryPort accountReportRepository) {
-        this.accountMovementRepository = accountMovementRepository;
-        this.accountRepository = accountRepository;
-        this.accountReportRepository = accountReportRepository;
+    public TransactionService(IAccountMovementRepositoryPort movementRepositoryPort, IAccountRepositoryPort accountRepositoryPort, IMovementReportRepositoryPort movementReportRepositoryPort) {
+        this.movementRepositoryPort = movementRepositoryPort;
+        this.accountRepositoryPort = accountRepositoryPort;
+        this.movementReportRepositoryPort = movementReportRepositoryPort;
     }
 
     @Override
     public Movement findById(Integer id) {
-        return accountMovementRepository.findById(id).orElseThrow(() -> new AccountMovementNotFoundException("Movement not found with id: " + id));
+        return movementRepositoryPort.findById(id).orElseThrow(() -> new AccountMovementNotFoundException("Movement not found with id: " + id));
     }
 
     @Override
     public List<Movement> findAll() {
-        return accountMovementRepository.findAll();
+        return movementRepositoryPort.findAll();
     }
 
 
@@ -47,21 +47,21 @@ public class TransactionService implements IAccountTransactionPort {
         Double updatedBalance = processMovement(account, movement);
         updateAccountBalance(account, updatedBalance);
         prepareMovement(movement, updatedBalance);
-        return accountMovementRepository.transaction(movement);
+        return movementRepositoryPort.transaction(movement);
     }
 
     @Override
     public void cancelTransaction(Integer movementId) {
-        accountMovementRepository.cancelTransaction(movementId);
+        movementRepositoryPort.cancelTransaction(movementId);
     }
 
     @Override
     public List<MovementReport> generateMovementReport(Integer accountId, LocalDate startDate, LocalDate endDate) {
-        return accountReportRepository.findByAccountIdAndDate(accountId, startDate, endDate);
+        return movementReportRepositoryPort.findByAccountIdAndDate(accountId, startDate, endDate);
     }
 
     private Account getAccountOrThrow(Integer accountId) {
-        return accountRepository.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("Account not found with ID: " + accountId));
+        return accountRepositoryPort.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("Account not found with ID: " + accountId));
     }
 
     private Double processMovement(Account account, Movement movement) {
@@ -91,7 +91,7 @@ public class TransactionService implements IAccountTransactionPort {
 
     private void updateAccountBalance(Account account, Double updatedBalance) {
         account.setAvailableBalance(updatedBalance);
-        accountRepository.saveAccount(account);
+        accountRepositoryPort.saveAccount(account);
     }
 
     private void prepareMovement(Movement movement, Double updatedBalance) {

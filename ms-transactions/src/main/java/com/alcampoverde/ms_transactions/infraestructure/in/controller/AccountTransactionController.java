@@ -16,7 +16,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("v1/movements")
 @RequiredArgsConstructor
-public class AccountMovementController {
+public class AccountTransactionController {
 
     private final MovementHandler movementTransaction;
 
