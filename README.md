@@ -107,3 +107,26 @@ Ambos microservicios (**ms-customer** y **ms-transactions**) utilizan **arquitec
 1. Clonar el repositorio:  
 ```bash
 git clone <url-del-repo>
+```
+2. Configurar la base de datos finance_service_db en MySQL
+
+3. Configurar los puertos y variables de Kafka en application.properties o .yml
+
+4. Ejecutar los microservicios:
+
+  * MS-Customer: 8085
+
+  * MS-Transactions: 8086
+
+5. Probar endpoints con Postman o cualquier cliente REST
+
+--
+##📈 Beneficios
+
+Escalabilidad y mantenibilidad gracias a arquitectura hexagonal
+
+APIs bien definidas y consistentes entre microservicios
+
+Integración con mensajería asincrónica para desacoplar servicios
+
+Base de datos relacional con trazabilidad completa de clientes, cuentas y transacciones
