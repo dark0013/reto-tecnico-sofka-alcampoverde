@@ -1,15 +1,15 @@
 version: '3.8'
 
 volumes:
-  mysql_data-tcs:
+  mysql_data-sofka:
 
 networks:
-  ret-micros-tcs:
+  ret-micros-sofka:
 
 services:
-  mysql-tcs:
+  mysql-sofka:
     image: mysql:latest
-    container_name: mysql-tcs
+    container_name: mysql-sofka
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: finance_service_db
@@ -18,34 +18,34 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data-tcs:/var/lib/mysql
+      - mysql_data-sofka:/var/lib/mysql
     networks:
-      - ret-micros-tcs
+      - ret-micros-sofka
 
-  ms-customer-tcs:
+  ms-customer-sofka:
     build:
       context: ./ms-customer
       dockerfile: Dockerfile
-    container_name: micro1-tcs
+    container_name: micro1-sofka
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tcs:3306/finance_service_db?serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-sofka:3306/finance_service_db?serverTimezone=UTC
     ports:
-      - "9595:9595"
+      - "8085:8085"
     networks:
-      - ret-micros-tcs
+      - ret-micros-sofka
     depends_on:
-      - mysql-tcs
+      - mysql-sofka
 
-  ms-account-tcs:
+  ms-account-sofka:
     build:
       context: ./ms-transactions
       dockerfile: Dockerfile
-    container_name: micro2-tcs
+    container_name: micro2-sofka
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tcs:3306/finance_service_db?serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-sofka:3306/finance_service_db?serverTimezone=UTC
     ports:
-      - "9596:9596"
+      - "8086:8086"
     networks:
-      - ret-micros-tcs
+      - ret-micros-sofka
     depends_on:
-      - mysql-tcs
+      - mysql-sofka
