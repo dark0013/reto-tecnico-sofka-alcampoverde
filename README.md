@@ -17,12 +17,12 @@ Bienvenido al repositorio del **Finance Service**, una solución de microservici
 
 ## 🏗 Arquitectura del Proyecto
 
-El sistema está compuesto por dos microservicios principales:  
+El sistema está compuesto por dos microservicios principales, ambos desarrollados con **arquitectura hexagonal** para garantizar escalabilidad, mantenibilidad y separación clara de responsabilidades:  
 
 | Microservicio       | Puerto | Descripción |
 |--------------------|--------|-------------|
-| `ms-customer`      | 8085   | Gestión de información de clientes. Exposición de endpoints para crear, actualizar, eliminar y consultar clientes. |
-| `ms-transactions`  | 8086   | Gestión de cuentas y transacciones. Incluye control de movimientos, balance de cuentas y generación de reportes. |
+| `ms-customer`      | 8085   | Gestión de información de clientes. Exposición de endpoints para crear, actualizar, eliminar y consultar clientes. Arquitectura hexagonal para separación de dominio y adaptadores. |
+| `ms-transactions`  | 8086   | Gestión de cuentas y transacciones. Control de movimientos, balance de cuentas y generación de reportes. Arquitectura hexagonal para escalabilidad y modularidad. |
 
 Todos los servicios se conectan a la **base de datos MySQL `finance_service_db`** y utilizan **Kafka** en el puerto `9092` para mensajería asíncrona entre microservicios.
 
