@@ -1,0 +1,5 @@
+com\alcampoverde\ms_customer\application\CustomerServiceTest.class
+com\alcampoverde\ms_customer\infrastructure\in\rest\controller\CustomerControllerTest$1.class
+com\alcampoverde\ms_customer\infrastructure\in\rest\controller\CustomerControllerTest$2.class
+com\alcampoverde\ms_customer\MsCustomerApplicationTests.class
+com\alcampoverde\ms_customer\infrastructure\in\rest\controller\CustomerControllerTest.class
