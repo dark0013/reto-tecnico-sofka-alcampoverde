@@ -12,7 +12,7 @@ services:
     container_name: mysql-tcs
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mediapp19
+      MYSQL_DATABASE: finance_service_db
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
     ports:
@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: micro1-tcs
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tcs:3306/mediapp19?serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tcs:3306/finance_service_db?serverTimezone=UTC
     ports:
       - "9595:9595"
     networks:
@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile
     container_name: micro2-tcs
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tcs:3306/mediapp19?serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-tcs:3306/finance_service_db?serverTimezone=UTC
     ports:
       - "9596:9596"
     networks:

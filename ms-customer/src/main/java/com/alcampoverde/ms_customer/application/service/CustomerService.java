@@ -16,7 +16,11 @@ public class CustomerService implements ICustomerServicePort {
 
     @Override
     public List<Customer> findAllCustomers() {
-        return this.customerRepositoryPort.findAllCustomers();
+        List<Customer> customers = this.customerRepositoryPort.findAllCustomers();
+        if (customers == null || customers.isEmpty()) {
+            throw new CustomerNotFoundException("No customers found");
+        }
+        return customers;
     }
 
     @Override
@@ -36,6 +40,7 @@ public class CustomerService implements ICustomerServicePort {
 
     @Override
     public void deleteCustomer(Integer id) {
-        this.customerRepositoryPort.deleteCustomer(id);
+        Customer existingCustomer = customerRepositoryPort.findCustomerById(id).orElseThrow(() -> new CustomerNotFoundException("No customer found with ID: " + id));
+        customerRepositoryPort.deleteCustomer(id);
     }
 }
