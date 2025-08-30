@@ -60,7 +60,7 @@ class CustomerControllerTest {
         assertEquals("Alice", response.getBody().getName());
         verify(customerHandler, times(1)).findCustomerById(1);
     }
-    
+
     @Test
     void testUpdateCustomer() {
        
