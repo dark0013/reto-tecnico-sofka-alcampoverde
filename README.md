@@ -1,67 +1,47 @@
-# 💳 Finance Service - Microservices Architecture
+# 🏦 Finance Microservices System
 
-Bienvenido al repositorio del **Finance Service**, una solución de microservicios diseñada para la gestión de cuentas y transacciones financieras de manera eficiente, segura y escalable.  
-
----
-
-## 🚀 Tecnologías Utilizadas
-
-- **Lenguaje:** Java (Spring Boot)
-- **Bases de datos:** MySQL
-- **Mensajería:** Apache Kafka
-- **Validación:** Jakarta Validation API
-- **Mapper:** MapStruct (para DTOs y entidades)
-- **Testing:** JUnit 5, Mockito, MockMvc
+Sistema de microservicios financieros, compuesto por **ms-customer** y **ms-transactions**, desarrollado con arquitectura hexagonal para garantizar **escalabilidad, mantenibilidad y separación de responsabilidades**.  
 
 ---
 
-## 🏗 Arquitectura del Proyecto
+## 🌐 Servicios y Endpoints
 
-El sistema está compuesto por dos microservicios principales, ambos desarrollados con **arquitectura hexagonal** para garantizar escalabilidad, mantenibilidad y separación clara de responsabilidades:  
+### 1️⃣ MS-Customer
+- **Puerto:** 8085
+- **Propósito:** Gestión de clientes
+- **Principales Endpoints:**
+  - `GET /v1/customer` → Listar todos los clientes
+  - `GET /v1/customer/{id}` → Obtener un cliente por ID
+  - `POST /v1/customer` → Crear un cliente
+  - `PUT /v1/customer` → Actualizar un cliente
+  - `DELETE /v1/customer/{id}` → Eliminar un cliente
 
-| Microservicio       | Puerto | Descripción |
-|--------------------|--------|-------------|
-| `ms-customer`      | 8085   | Gestión de información de clientes. Exposición de endpoints para crear, actualizar, eliminar y consultar clientes. Arquitectura hexagonal para separación de dominio y adaptadores. |
-| `ms-transactions`  | 8086   | Gestión de cuentas y transacciones. Control de movimientos, balance de cuentas y generación de reportes. Arquitectura hexagonal para escalabilidad y modularidad. |
-
-Todos los servicios se conectan a la **base de datos MySQL `finance_service_db`** y utilizan **Kafka** en el puerto `9092` para mensajería asíncrona entre microservicios.
+### 2️⃣ MS-Transactions
+- **Puerto:** 8086
+- **Propósito:** Gestión de cuentas y transacciones financieras
+- **Principales Endpoints:**
+  - **Cuentas (Account):**
+    - `GET /v1/accounts` → Listar todas las cuentas
+    - `GET /v1/accounts/{id}` → Obtener cuenta por ID
+    - `GET /v1/accounts/accountNumber/{accountNumber}` → Obtener cuenta por número
+    - `POST /v1/accounts` → Crear cuenta
+    - `PUT /v1/accounts` → Actualizar cuenta
+    - `DELETE /v1/accounts/{id}` → Eliminar cuenta
+  - **Transacciones (Transaction):**
+    - `GET /v1/movements` → Listar todas las transacciones
+    - `POST /v1/movements` → Crear una transacción
+    - `DELETE /v1/movements/{id}` → Desactivar una transacción
 
 ---
 
-## 📦 Endpoints Disponibles
+## 🏗 Arquitectura
 
-### **MS-Customer (`8085`)**
+Ambos microservicios (**ms-customer** y **ms-transactions**) utilizan **arquitectura hexagonal**, lo que permite:
 
-| Método | Endpoint | Descripción |
-|--------|---------|-------------|
-| GET    | `/v1/customer` | Listar todos los clientes |
-| GET    | `/v1/customer/{id}` | Obtener cliente por ID |
-| POST   | `/v1/customer` | Crear un nuevo cliente |
-| PUT    | `/v1/customer` | Actualizar un cliente existente |
-| DELETE | `/v1/customer/{id}` | Eliminar un cliente por ID |
-
----
-
-### **MS-Transactions (`8086`)**
-
-#### **Cuentas**
-
-| Método | Endpoint | Descripción |
-|--------|---------|-------------|
-| GET    | `/v1/accounts` | Listar todas las cuentas |
-| GET    | `/v1/accounts/{id}` | Obtener cuenta por ID |
-| GET    | `/v1/accounts/accountNumber/{accountNumber}` | Obtener cuenta por número de cuenta |
-| POST   | `/v1/accounts` | Crear una nueva cuenta |
-| PUT    | `/v1/accounts` | Actualizar una cuenta existente |
-| DELETE | `/v1/accounts/{id}` | Eliminar una cuenta por ID |
-
-#### **Transacciones**
-
-| Método | Endpoint | Descripción |
-|--------|---------|-------------|
-| GET    | `/v1/movements` | Listar todas las transacciones |
-| POST   | `/v1/movements` | Crear una nueva transacción (depósito o retiro) |
-| DELETE | `/v1/movements/{id}` | Cancelar o desactivar una transacción |
+- Separar la lógica de negocio de la infraestructura
+- Facilitar la escalabilidad horizontal y vertical
+- Permitir la implementación de adaptadores y puertos para distintos clientes y servicios externos
+- Garantizar pruebas unitarias y de integración más limpias y confiables
 
 ---
 
@@ -70,42 +50,60 @@ Todos los servicios se conectan a la **base de datos MySQL `finance_service_db`*
 - **Nombre:** `finance_service_db`
 - **Motor:** MySQL
 - **Tablas principales:**  
-  - `tbl_adm_account` → gestión de cuentas  
-  - `tbl_adm_transaction` → registro de movimientos financieros  
-- **Relaciones:**  
-  - Una cuenta (`Account`) puede tener múltiples transacciones (`Movement`)  
-  - Cada transacción está asociada a un cliente a través de la cuenta
+  - `tbl_adm_customer` → Gestión de clientes  
+  - `tbl_adm_account` → Gestión de cuentas, asociadas a clientes  
+  - `tbl_adm_transaction` → Registro de movimientos financieros  
+
+- **Relaciones principales:**  
+  - Un **cliente** (`Customer`) puede tener múltiples **cuentas** (`Account`)  
+  - Una **cuenta** puede tener múltiples **transacciones** (`Movement`)  
+  - Cada **transacción** está asociada a una cuenta y a su cliente correspondiente  
+
 
 ---
 
-## ⚡ Kafka Integration
-
-El sistema utiliza **Kafka** para la comunicación entre servicios, con la siguiente configuración:  
+## ⚡ Kafka
 
 - **Puerto:** 9092
-- **Uso principal:** Validación de existencia de clientes y registro de eventos de transacciones
+- **Uso:** Comunicación asincrónica entre microservicios
+- Permite notificar eventos como la creación de cuentas o transacciones sin acoplar los servicios directamente.
 
 ---
 
-## 🧪 Testing
+## 🧩 Funcionalidades Clave
 
-- Pruebas unitarias implementadas con **JUnit 5** y **Mockito** siguiendo el patrón **AAA (Arrange, Act, Assert)**
-- Pruebas de integración usando **MockMvc** para simular peticiones HTTP reales a los endpoints del microservicio
+- Gestión completa de **clientes, cuentas y transacciones**
+- Validación de reglas de negocio:
+  - No permitir transacciones con saldo insuficiente
+  - Validación de tipos de movimiento
+  - Verificación de existencia de clientes antes de crear cuentas
+- Reportes de movimientos por rango de fecha
+- API RESTful bien estructurada con documentación de endpoints clara
+- Arquitectura hexagonal que facilita escalabilidad y pruebas
 
 ---
 
-## 📝 Ejemplo de Uso
+## 🛠 Tecnologías
 
-### Crear una cuenta
+- **Lenguaje:** Java 17
+- **Framework:** Spring Boot  
+- **Base de Datos:** MySQL  
+- **Mensajería:** Kafka  
+- **Validación:** Jakarta Validation (Bean Validation)  
+- **Construcción:** Maven  
 
+---
+
+## 📦 Pruebas
+
+- **Unitarias:** Mockito + JUnit 5 con patrón **triple A**
+- **Integración:** Spring Boot Test para endpoints REST
+- **Cobertura de pruebas:** Lógica de negocio, controladores y adaptadores
+
+---
+
+## 🚀 Ejecución del proyecto
+
+1. Clonar el repositorio:  
 ```bash
-POST http://localhost:8086/v1/accounts
-Content-Type: application/json
-
-{
-  "accountNumber": "12345678",
-  "accountType": "SAVINGS",
-  "availableBalance": 1000.0,
-  "status": true,
-  "customerId": 1
-}
+git clone <url-del-repo>
